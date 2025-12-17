@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+body{
+  --background: #F0EAF8;
+  --light-violet: #CBB6E5;
+  --dark-violet: #761BE4;
+  --dark-text: #000853;
+  --grey-text: #898DA9;
+}
