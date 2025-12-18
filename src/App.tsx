@@ -1,8 +1,7 @@
-import { useState } from "react";
+import { useState, type ChangeEvent } from "react";
 import { Textfield } from "./Textfield";
 import { Button } from "./Button";
-import remove from "./assets/remove.svg";
-import removeHover from "./assets/removeHover.svg";
+import { IconRemove } from "./IconRemove";
 
 function App() {
   const [firstName, setFirstName] = useState<string>("");
@@ -12,7 +11,22 @@ function App() {
   const [errorEmail, setErrorEmail] = useState<string>("");
   const [date, setDate] = useState<string>("");
   const [hour, setHour] = useState<string>("");
+  const [imageFile, setImageFile] = useState<File>();
   const availableHours = ["12:00", "14:00", "16:30", "18:30", "20:00"];
+  const updateImage = (event: ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      setImageFile(event.target.files[0]);
+    }
+  };
+  const handleDragOver = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+  };
+  const handleFileDrop = (event: React.DragEvent<HTMLDivElement>) => {
+    event.preventDefault();
+    if (event.dataTransfer.files && event.dataTransfer.files[0]) {
+      setImageFile(event.dataTransfer.files[0]);
+    }
+  };
 
   return (
     <div className="flex justify-center text-dark-text bg-background min-h-screen">
@@ -68,19 +82,35 @@ function App() {
           </div>
           <div>
             <label htmlFor="photo">Photo</label>
-            <div className="border flex justify-center px-4 py-9 border-light-violet bg-white rounded-lg whitespace-pre">
-              <label
-                className="text-dark-violet underline cursor-pointer"
-                htmlFor="photo"
-              >
-                Upload a file
-              </label>
-              <span className="text-grey-text"> or drag and drop here</span>
+            <div
+              onDragOver={handleDragOver}
+              onDrop={handleFileDrop}
+              className="border flex justify-center px-4 py-9 border-light-violet bg-white rounded-lg whitespace-pre"
+            >
+              {imageFile ? (
+                <>
+                  {imageFile.name}{" "}
+                  <button onClick={() => setImageFile(undefined)}>
+                    <IconRemove />
+                  </button>
+                </>
+              ) : (
+                <>
+                  <label
+                    className="text-dark-violet underline cursor-pointer"
+                    htmlFor="photo"
+                  >
+                    Upload a file
+                  </label>
+                  <span className="text-grey-text"> or drag and drop here</span>
+                </>
+              )}
               <input
                 type="file"
                 id="photo"
                 accept="image/png, image/jpeg"
                 className="hidden"
+                onChange={updateImage}
               />
             </div>
           </div>
@@ -88,7 +118,12 @@ function App() {
         <h2 className="text-2xl">Your workout</h2>
         <label>Date</label>
         <label>Time</label>
-        <Button text="Send Application" />
+        <Button
+          text="Send Application"
+          disabled={
+            !firstName || !lastName || !email || !date || !hour || !imageFile
+          }
+        />
       </div>
     </div>
   );
