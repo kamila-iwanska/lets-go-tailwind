@@ -1,9 +1,15 @@
 @import "tailwindcss";
 
-body{
-  --background: #F0EAF8;
-  --light-violet: #CBB6E5;
-  --dark-violet: #761BE4;
-  --dark-text: #000853;
-  --grey-text: #898DA9;
+@theme {
+  --color-*: initial;
+  --color-background: #f0eaf8;
+  --color-light-violet: #cbb6e5;
+  --color-dark-violet: #761be4;
+  --color-darker-violet: #6a19cd;
+  --color-dark-text: #000853;
+  --color-grey-text: #898da9;
+  --color-red: #ed4545;
+  --color-light-red: #feecec;
+  --color-white: #ffffff;
+  --font-sans: Inter;
 }
