@@ -3,6 +3,7 @@ import { Textfield } from "./Textfield";
 import { Button } from "./Button";
 import { IconRemove } from "./IconRemove";
 import { Calendar } from "./Calendar";
+import { Hours } from "./Hours";
 
 function App() {
   const [firstName, setFirstName] = useState<string>("");
@@ -13,7 +14,6 @@ function App() {
   const [date, setDate] = useState<Date>();
   const [hour, setHour] = useState<string>("");
   const [imageFile, setImageFile] = useState<File>();
-  const availableHours = ["12:00", "14:00", "16:30", "18:30", "20:00"];
   const updateImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImageFile(event.target.files[0]);
@@ -124,6 +124,7 @@ function App() {
           </div>
           <div>
             <label>Time</label>
+            {date ? <Hours hour={hour} setHour={setHour} /> : null}
           </div>
         </div>
         <Button

@@ -26,9 +26,10 @@ export function Textfield({
         type={inputType}
         value={value}
         className={
-          error
-            ? "border-2 rounded-lg px-4 py-3 border-red bg-light-red outline-none"
-            : "border rounded-lg px-4 py-3 border-light-violet bg-white focus:border-dark-violet focus:border-2 outline-none"
+          "rounded-lg px-4 py-3 outline-none " +
+          (error
+            ? "border-2  border-red bg-light-red"
+            : "border border-light-violet bg-white focus:border-dark-violet focus:border-2 ")
         }
         onChange={(e) => setValue(e.target.value)}
       />

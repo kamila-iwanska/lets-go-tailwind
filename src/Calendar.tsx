@@ -59,13 +59,14 @@ export function Calendar({
         {numbersToN(daysInMonth(month)).map((d) => (
           <button
             className={
-              new Date(
+              "cursor-pointer rounded-full w-8 h-8" +
+              (new Date(
                 now.getFullYear(),
                 now.getMonth() + month,
                 d
               ).getTime() == date?.getTime()
-                ? "cursor-pointer rounded-full bg-dark-violet text-white w-8 h-8"
-                : "cursor-pointer rounded-full w-8 h-8"
+                ? " bg-dark-violet text-white"
+                : "")
             }
             onClick={() =>
               setDate(new Date(now.getFullYear(), now.getMonth() + month, d))
