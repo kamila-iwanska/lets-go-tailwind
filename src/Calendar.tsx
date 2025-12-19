@@ -20,9 +20,11 @@ const now = new Date();
 export function Calendar({
   date,
   setDate,
+  isDateDisabled,
 }: {
   date?: Date;
   setDate: (newDate: Date) => void;
+  isDateDisabled: (newDate: Date) => boolean;
 }) {
   const [month, setMonth] = useState<number>(0);
   return (
@@ -45,7 +47,7 @@ export function Calendar({
           <img src={arrowR} />
         </button>
       </div>
-      <div className="grid text-center grid-cols-7 gap-3">
+      <div className="grid text-center grid-cols-7 gap-2.5">
         <span>Mo</span>
         <span>Tu</span>
         <span>We</span>
@@ -58,8 +60,12 @@ export function Calendar({
         ))}
         {numbersToN(daysInMonth(month)).map((d) => (
           <button
+            disabled={isDateDisabled(
+              new Date(now.getFullYear(), now.getMonth() + month, d)
+            )}
+            key={d}
             className={
-              "cursor-pointer rounded-full w-8 h-8" +
+              "cursor-pointer rounded-full w-8 h-8 disabled:text-grey-text" +
               (new Date(
                 now.getFullYear(),
                 now.getMonth() + month,

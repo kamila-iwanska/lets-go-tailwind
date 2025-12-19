@@ -10,6 +10,7 @@ export function Hours({
     <div className="flex flex-col gap-2">
       {hours.map((h) => (
         <div
+          key={h}
           onClick={() => setHour(h)}
           className={
             " bg-white rounded-lg px-3.75 py-2.75 cursor-pointer " +

@@ -1,9 +1,13 @@
-import { useState, type ChangeEvent } from "react";
+import { useEffect, useState, type ChangeEvent } from "react";
 import { Textfield } from "./Textfield";
 import { Button } from "./Button";
 import { IconRemove } from "./IconRemove";
 import { Calendar } from "./Calendar";
+import WarningViolet from "./assets/warningViolet.svg";
 import { Hours } from "./Hours";
+import { fetchData, sendApplication } from "./API";
+import type { Holiday } from "./Types";
+import valueIndicator from "./assets/valueIndicator.svg";
 
 function App() {
   const [firstName, setFirstName] = useState<string>("");
@@ -14,6 +18,10 @@ function App() {
   const [date, setDate] = useState<Date>();
   const [hour, setHour] = useState<string>("");
   const [imageFile, setImageFile] = useState<File>();
+  const [fetchedData, setFetchedData] = useState<Holiday[]>([]);
+  useEffect(() => {
+    fetchData().then((data) => setFetchedData(data));
+  }, []);
   const updateImage = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files[0]) {
       setImageFile(event.target.files[0]);
@@ -28,6 +36,9 @@ function App() {
       setImageFile(event.dataTransfer.files[0]);
     }
   };
+  const foundHoliday = fetchedData.find(
+    (h) => h.date == date?.toLocaleDateString("en-CA") && h.type == "OBSERVANCE"
+  );
 
   return (
     <div className="flex justify-center text-dark-text bg-background min-h-screen">
@@ -80,6 +91,12 @@ function App() {
               className="w-full bg-light-violet accent-dark-violet"
               onChange={(e) => setAge(e.target.value)}
             />
+            <div className="grid place-items-center">
+              <img className="col-start-1 row-start-1" src={valueIndicator} />
+              <span className="col-start-1 row-start-1 text-xs text-dark-violet mt-1.5">
+                {age}
+              </span>
+            </div>
           </div>
           <div>
             <label htmlFor="photo">Photo</label>
@@ -120,7 +137,23 @@ function App() {
         <div className="flex gap-6">
           <div>
             <label>Date</label>
-            <Calendar date={date} setDate={setDate} />
+            <Calendar
+              date={date}
+              setDate={setDate}
+              isDateDisabled={(date) =>
+                fetchedData.some(
+                  (h) =>
+                    h.date == date?.toLocaleDateString("en-CA") &&
+                    h.type == "NATIONAL_HOLIDAY"
+                ) || date.getDay() == 0
+              }
+            />
+            {foundHoliday ? (
+              <span className="flex my-2 gap-2">
+                <img src={WarningViolet} />
+                It is {foundHoliday.name}.
+              </span>
+            ) : null}
           </div>
           <div>
             <label>Time</label>
@@ -128,9 +161,29 @@ function App() {
           </div>
         </div>
         <Button
+          onClick={() => {
+            if (!date || !imageFile) {
+            } else {
+              const formData = new FormData();
+              formData.append("firstName", firstName);
+              formData.append("lastName", lastName);
+              formData.append("email", email);
+              formData.append("age", age);
+              formData.append("photo", imageFile);
+              formData.append("date", date?.toLocaleDateString("en-CA"));
+              formData.append("hour", hour);
+              sendApplication(formData);
+            }
+          }}
           text="Send Application"
           disabled={
-            !firstName || !lastName || !email || !date || !hour || !imageFile
+            !firstName ||
+            !lastName ||
+            !email ||
+            !age ||
+            !date ||
+            !hour ||
+            !imageFile
           }
         />
       </div>
