@@ -2,6 +2,7 @@ import { useState, type ChangeEvent } from "react";
 import { Textfield } from "./Textfield";
 import { Button } from "./Button";
 import { IconRemove } from "./IconRemove";
+import { Calendar } from "./Calendar";
 
 function App() {
   const [firstName, setFirstName] = useState<string>("");
@@ -9,7 +10,7 @@ function App() {
   const [email, setEmail] = useState<string>("");
   const [age, setAge] = useState<string>("");
   const [errorEmail, setErrorEmail] = useState<string>("");
-  const [date, setDate] = useState<string>("");
+  const [date, setDate] = useState<Date>();
   const [hour, setHour] = useState<string>("");
   const [imageFile, setImageFile] = useState<File>();
   const availableHours = ["12:00", "14:00", "16:30", "18:30", "20:00"];
@@ -31,7 +32,7 @@ function App() {
   return (
     <div className="flex justify-center text-dark-text bg-background min-h-screen">
       <div className="flex flex-col px-6 py-24 max-w-120 w-full">
-        <h2 className="text-2xl">Personal info</h2>
+        <h2 className="text-2xl mb-8">Personal info</h2>
         <div className="flex flex-col gap-6">
           <Textfield
             labelText="First Name"
@@ -115,9 +116,16 @@ function App() {
             </div>
           </div>
         </div>
-        <h2 className="text-2xl">Your workout</h2>
-        <label>Date</label>
-        <label>Time</label>
+        <h2 className="text-2xl mt-12 mb-8">Your workout</h2>
+        <div className="flex gap-6">
+          <div>
+            <label>Date</label>
+            <Calendar date={date} setDate={setDate} />
+          </div>
+          <div>
+            <label>Time</label>
+          </div>
+        </div>
         <Button
           text="Send Application"
           disabled={
