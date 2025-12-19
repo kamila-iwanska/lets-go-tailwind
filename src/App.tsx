@@ -91,12 +91,14 @@ function App() {
               className="w-full bg-light-violet accent-dark-violet"
               onChange={(e) => setAge(e.target.value)}
             />
-            <div className="grid place-items-center">
-              <img className="col-start-1 row-start-1" src={valueIndicator} />
-              <span className="col-start-1 row-start-1 text-xs text-dark-violet mt-1.5">
-                {age}
-              </span>
-            </div>
+            {age ? (
+              <div className="grid place-items-center">
+                <img className="col-start-1 row-start-1" src={valueIndicator} />
+                <span className="col-start-1 row-start-1 text-xs text-dark-violet mt-1.5">
+                  {age}
+                </span>
+              </div>
+            ) : null}
           </div>
           <div>
             <label htmlFor="photo">Photo</label>
