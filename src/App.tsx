@@ -5,7 +5,7 @@ import { IconRemove } from "./IconRemove";
 import { Calendar } from "./Calendar";
 import WarningViolet from "./assets/warningViolet.svg";
 import { Hours } from "./Hours";
-import { fetchData, sendApplication } from "./API";
+import { fetchData, sendApplication } from "./Api";
 import type { Holiday } from "./Types";
 import valueIndicator from "./assets/valueIndicator.svg";
 
